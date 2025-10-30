@@ -1,0 +1,226 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Fira Code', monospace;
+            background: #0a0e27;
+            color: #e4e4e7;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { 
+            max-width: 1400px; 
+            margin: auto; 
+            background: #111827;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1f2937;
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 40px; 
+            padding-bottom: 30px;
+            border-bottom: 2px solid #1f2937;
+        }
+
+        h1 { 
+            color: #60a5fa; 
+            font-size: 3.5em; 
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            text-shadow: 0 0 30px rgba(96, 165, 250, 0.3);
+        }
+
+        .tagline {
+            color: #9ca3af;
+            font-size: 1.1em;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .theme-button {
+            padding: 10px 24px;
+            background: #60a5fa;
+            color: #0a0e27;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(96, 165, 250, 0.3);
+        }
+
+        .theme-button:hover {
+            background: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+        }
+
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .form-section, .results-section {
+            flex: 1;
+            padding: 30px;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            background: #1a1f35;
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
+            align-items: flex-start; /* Align items to the start to prevent stretching */
+        }
+
+        h2 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            flex: 1; /* Allow textarea to grow within its parent */
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            color: #e4e4e7;
+            resize: vertical; /* Allow vertical resizing only */
+            line-height: 1.6;
+            transition: border-color 0.3s ease;
+            overflow-y: auto; /* Add scrollbar if content exceeds height */
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        button { 
+            padding: 14px 32px; 
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+        }
+
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .clear-button {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        }
+
+        .clear-button:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+        }
+
+        pre { 
+            background: #0f172a; 
+            color: #e4e4e7;
+            padding: 25px; 
+            border: 1px solid #334155; 
+            white-space: pre-wrap; 
+            border-radius: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            flex: 1;
+            overflow-y: auto;
+            word-wrap: break-word;
+        }
+
+        .results-section {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading {
+            color: #60a5fa;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .container {
+                padding: 25px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1f35;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
