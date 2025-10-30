@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepCode Reviewer - Dark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_dark.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DeepCode Reviewer</h1>
+            <p class="tagline">Your AI-powered code analysis partner</p>
+            <button class="theme-button" onclick="window.location.href='/toggle_theme'">Switch to Light Mode</button>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="form-section">
+                <h2>Enter Code</h2>
+                <textarea id="codeInput" placeholder="Paste your code here..."></textarea>
+                <div class="button-group">
+                    <button onclick="reviewCode()">Review Code</button>
+                    <button class="clear-button" onclick="clearCode()">Clear</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="reviewResults">
+                <h2>Review</h2>
+                <pre id="reviewOutput">Your code review will appear here...</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeInput = document.getElementById('codeInput');
+            const reviewOutput = document.getElementById('reviewOutput');
+
+            const savedCode = localStorage.getItem('deepcodeReviewerCode');
+            if (savedCode) {
+                codeInput.value = savedCode;
+            }
+
+            const savedReview = localStorage.getItem('deepcodeReviewerReview');
+            if (savedReview) {
+                reviewOutput.innerHTML = savedReview;
+            }
+
+            // Save content before navigating away (e.g., theme toggle)
+            window.addEventListener('beforeunload', () => {
+                localStorage.setItem('deepcodeReviewerCode', codeInput.value);
+                localStorage.setItem('deepcodeReviewerReview', reviewOutput.innerHTML);
+            });
+        });
+
+        function clearCode() {
+            const codeInput = document.getElementById('codeInput');
+            codeInput.value = '';
+            localStorage.removeItem('deepcodeReviewerCode');
+            document.getElementById('reviewOutput').textContent = 'Your code review will appear here...';
+            localStorage.removeItem('deepcodeReviewerReview');
+        }
+
+        function reviewCode() {
+            const code = document.getElementById('codeInput').value;
+            const resultsDiv = document.getElementById('reviewResults');
+            const outputPre = document.getElementById('reviewOutput');
+            
+            if (!code.trim()) {
+                alert('Please enter some code to review!');
+                return;
+            }
+
+            // Show loading state
+            outputPre.textContent = '⏳ Analyzing your code...';
+            outputPre.classList.add('loading');
+
+            fetch('/review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'code=' + encodeURIComponent(code)
+            })
+            .then(response => response.text())
+            .then(review => {
+                outputPre.innerHTML = marked.parse(review); // Render markdown
+                outputPre.classList.remove('loading');
+                resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                outputPre.textContent = '❌ An error occurred while fetching the review.';
+                outputPre.classList.remove('loading');
+            });
+        }
+    </script>
+</body>
+</html>
